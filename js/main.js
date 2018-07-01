@@ -85,8 +85,9 @@ initMap = () => {
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.streets'
   }).addTo(newMap);
-
   updateRestaurants();
+  const mapimg = document.querySelectorAll('img[role="presentation"]');
+  mapimg.forEach(function(img){img.alt='';});
 }
 /* window.initMap = () => {
   let loc = {
@@ -161,10 +162,12 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = restaurant.name + ' Image';
   li.append(image);
 
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
+  name.className = 'restaurant-name'
   li.append(name);
 
   const neighborhood = document.createElement('p');
@@ -178,6 +181,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.setAttribute('aria-label',restaurant.name+ '. Select to View Restaurant Details')
   li.append(more)
 
   return li
@@ -208,3 +212,75 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 } */
+
+// ARIA funcitons for Dropdown Filters src: https://www.w3.org/TR/wai-aria-practices/examples/listbox/js/listbox-collapsible.js
+window.addEventListener('load', function () {
+  var selectNeigh = document.getElementById('neighborhoods-select');
+  var neighFilter = new aria.ListboxSelect(selectNeigh);
+  var selectCuis = document.getElementById('neighborhoods-select');
+  var cuisFilter = new aria.ListboxSelect(selectCuis);
+});
+
+var aria = aria || {};
+
+
+
+aria.ListboxSelect = function (select) {
+  this.select = select;
+  this.registerEvents();
+};
+
+aria.ListboxSelect.prototype.registerEvents = function () {
+  this.select.addEventListener('click', this.showListbox.bind(this));
+  this.select.addEventListener('keyup', this.checkShow.bind(this));
+};
+
+aria.ListboxSelect.prototype.checkShow = function (evt) {
+  var key = evt.which || evt.keyCode;
+
+  switch (key) {
+    case aria.KeyCode.UP:
+    case aria.KeyCode.DOWN:
+      evt.preventDefault();
+      this.showListbox();
+      break;
+  }
+};
+
+aria.ListboxSelect.prototype.checkHide = function (evt) {
+  var key = evt.which || evt.keyCode;
+
+  switch (key) {
+    case aria.KeyCode.RETURN:
+    case aria.KeyCode.ESC:
+      evt.preventDefault();
+      this.hideListbox();
+      this.select.focus();
+      break;
+  }
+};
+
+aria.ListboxSelect.prototype.showListbox = function () {
+  aria.Utils.removeClass(this.listbox.listboxNode, 'hidden');
+  this.select.setAttribute('aria-expanded', 'true');
+};
+
+aria.ListboxSelect.prototype.hideListbox = function () {
+  aria.Utils.addClass(this.listbox.listboxNode, 'hidden');
+  this.select.removeAttribute('aria-expanded');
+};
+
+aria.ListboxSelect.prototype.onFocusChange = function (focusedItem) {
+  this.select.innerText = focusedItem.innerText;
+};
+
+// for ARIA hide all children of the Map
+$(document).ready(function(){
+  // var items = document.querySelectorAll('[class*=leaflet-marker-icon]');
+  // items.forEach(function(img){img.setAttribute('tabindex','-1')});
+  $('.leaflet-marker-icon').attr('tabindex','-1');
+  $('.leaflet-control-zoom-in').attr('tabindex','-1');
+  $('.leaflet-control-zoom-out').attr('tabindex','-1');
+  $('.leaflet-control-attribution').children('a').attr('tabindex','-1');
+  $('#map').attr('tabindex','-1');
+});

@@ -192,3 +192,15 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+// for ARIA hide all children of the Map
+$(document).ready(function(){
+  // var items = document.querySelectorAll('[class*=leaflet-marker-icon]');
+  // items.forEach(function(img){img.setAttribute('tabindex','-1')});
+  $('.leaflet-marker-icon').attr('tabindex','-1');
+  $('.leaflet-control-zoom-in').attr('tabindex','-1');
+  $('.leaflet-control-zoom-out').attr('tabindex','-1');
+  $('.leaflet-control-attribution').children('a').attr('tabindex','-1');
+  $('#map').attr('tabindex','-1');
+  $('#reviews-list').children('li').attr('tabindex','0');
+});
