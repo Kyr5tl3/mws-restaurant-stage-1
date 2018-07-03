@@ -170,7 +170,7 @@ createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
@@ -194,13 +194,13 @@ getParameterByName = (name, url) => {
 }
 
 // for ARIA hide all children of the Map
-$(document).ready(function(){
+$(document).ready(function() {
   // var items = document.querySelectorAll('[class*=leaflet-marker-icon]');
   // items.forEach(function(img){img.setAttribute('tabindex','-1')});
-  $('.leaflet-marker-icon').attr('tabindex','-1');
-  $('.leaflet-control-zoom-in').attr('tabindex','-1');
-  $('.leaflet-control-zoom-out').attr('tabindex','-1');
-  $('.leaflet-control-attribution').children('a').attr('tabindex','-1');
-  $('#map').attr('tabindex','-1');
-  $('#reviews-list').children('li').attr('tabindex','0');
+  $('.leaflet-marker-icon').attr('tabindex', '-1');
+  $('.leaflet-control-zoom-in').attr('tabindex', '-1');
+  $('.leaflet-control-zoom-out').attr('tabindex', '-1');
+  $('.leaflet-control-attribution').children('a').attr('tabindex', '-1');
+  $('#map').attr('tabindex', '-1');
+  $('#reviews-list').children('li').attr('tabindex', '0');
 });

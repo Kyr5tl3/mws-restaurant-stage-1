@@ -19,26 +19,27 @@ let cacheUrls = [
   "js/restaurant_info.js",
   "index.html",
   "restaurant.html",
-  "sw_registration.js"];
+  "sw_registration.js"
+];
 
-self.addEventListener('install', function(event){
+self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(staticCacheName).then(function(cache){
+    caches.open(staticCacheName).then(function(cache) {
       return cache.addAll(cacheUrls)
     });
   );
 });
 
-self.addEventListener('activate', function(event){
+self.addEventListener('activate', function(event) {
   event.waitUntil(
-    caches.keys().then(cacheNames => {Promise.all(cacheNames.filter(function(cacheName) {
-          return cache.startsWith('mws-') &&
-                 cacheName != staticCacheName;
-        }).map(function(cacheName){
-          console.log("ServiceWorker removing cached files from " + cacheName)
-          return caches.delete(cacheName);
-        })
-      );
+    caches.keys().then(cacheNames => {
+      Promise.all(cacheNames.filter(function(cacheName) {
+        return cache.startsWith('mws-') &&
+          cacheName != staticCacheName;
+      }).map(function(cacheName) {
+        console.log("ServiceWorker removing cached files from " + cacheName)
+        return caches.delete(cacheName);
+      }));
     })
   );
 });

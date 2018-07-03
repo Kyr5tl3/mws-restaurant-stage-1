@@ -73,10 +73,10 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  */
 initMap = () => {
   self.newMap = L.map('map', {
-        center: [40.722216, -73.987501],
-        zoom: 12,
-        scrollWheelZoom: false
-      });
+    center: [40.722216, -73.987501],
+    zoom: 12,
+    scrollWheelZoom: false
+  });
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
     mapboxToken: 'pk.eyJ1Ijoia3lyc3RsZSIsImEiOiJjamowYWh3dzgwNDNkM3FwODRsbXI4eXIxIn0.QwaALjVt16e4p0O24QaLGg',
     maxZoom: 18,
@@ -87,7 +87,9 @@ initMap = () => {
   }).addTo(newMap);
   updateRestaurants();
   const mapimg = document.querySelectorAll('img[role="presentation"]');
-  mapimg.forEach(function(img){img.alt='';});
+  mapimg.forEach(function(img) {
+    img.alt = '';
+  });
 }
 /* window.initMap = () => {
   let loc = {
@@ -181,7 +183,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  more.setAttribute('aria-label',restaurant.name+ '. Select to View Restaurant Details')
+  more.setAttribute('aria-label', restaurant.name + '. Select to View Restaurant Details')
   li.append(more)
 
   return li
@@ -195,6 +197,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.newMap);
     marker.on("click", onClick);
+
     function onClick() {
       window.location.href = marker.options.url;
     }
@@ -214,7 +217,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 } */
 
 // ARIA funcitons for Dropdown Filters src: https://www.w3.org/TR/wai-aria-practices/examples/listbox/js/listbox-collapsible.js
-window.addEventListener('load', function () {
+window.addEventListener('load', function() {
   var selectNeigh = document.getElementById('neighborhoods-select');
   var neighFilter = new aria.ListboxSelect(selectNeigh);
   var selectCuis = document.getElementById('neighborhoods-select');
@@ -225,17 +228,17 @@ var aria = aria || {};
 
 
 
-aria.ListboxSelect = function (select) {
+aria.ListboxSelect = function(select) {
   this.select = select;
   this.registerEvents();
 };
 
-aria.ListboxSelect.prototype.registerEvents = function () {
+aria.ListboxSelect.prototype.registerEvents = function() {
   this.select.addEventListener('click', this.showListbox.bind(this));
   this.select.addEventListener('keyup', this.checkShow.bind(this));
 };
 
-aria.ListboxSelect.prototype.checkShow = function (evt) {
+aria.ListboxSelect.prototype.checkShow = function(evt) {
   var key = evt.which || evt.keyCode;
 
   switch (key) {
@@ -247,7 +250,7 @@ aria.ListboxSelect.prototype.checkShow = function (evt) {
   }
 };
 
-aria.ListboxSelect.prototype.checkHide = function (evt) {
+aria.ListboxSelect.prototype.checkHide = function(evt) {
   var key = evt.which || evt.keyCode;
 
   switch (key) {
@@ -260,27 +263,27 @@ aria.ListboxSelect.prototype.checkHide = function (evt) {
   }
 };
 
-aria.ListboxSelect.prototype.showListbox = function () {
+aria.ListboxSelect.prototype.showListbox = function() {
   aria.Utils.removeClass(this.listbox.listboxNode, 'hidden');
   this.select.setAttribute('aria-expanded', 'true');
 };
 
-aria.ListboxSelect.prototype.hideListbox = function () {
+aria.ListboxSelect.prototype.hideListbox = function() {
   aria.Utils.addClass(this.listbox.listboxNode, 'hidden');
   this.select.removeAttribute('aria-expanded');
 };
 
-aria.ListboxSelect.prototype.onFocusChange = function (focusedItem) {
+aria.ListboxSelect.prototype.onFocusChange = function(focusedItem) {
   this.select.innerText = focusedItem.innerText;
 };
 
 // for ARIA hide all children of the Map
-$(document).ready(function(){
+$(document).ready(function() {
   // var items = document.querySelectorAll('[class*=leaflet-marker-icon]');
   // items.forEach(function(img){img.setAttribute('tabindex','-1')});
-  $('.leaflet-marker-icon').attr('tabindex','-1');
-  $('.leaflet-control-zoom-in').attr('tabindex','-1');
-  $('.leaflet-control-zoom-out').attr('tabindex','-1');
-  $('.leaflet-control-attribution').children('a').attr('tabindex','-1');
-  $('#map').attr('tabindex','-1');
+  $('.leaflet-marker-icon').attr('tabindex', '-1');
+  $('.leaflet-control-zoom-in').attr('tabindex', '-1');
+  $('.leaflet-control-zoom-out').attr('tabindex', '-1');
+  $('.leaflet-control-attribution').children('a').attr('tabindex', '-1');
+  $('#map').attr('tabindex', '-1');
 });
