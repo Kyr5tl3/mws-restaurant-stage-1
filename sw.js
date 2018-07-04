@@ -1,7 +1,7 @@
-let staticCacheName = 'mws-restaurant-v1';
+let CACHE_NAME = 'mws-restaurant-v1';
 
 let cacheUrls = [
-  "./",
+  "/",
   "css/styles.css",
   "data/restaurants.json",
   "img/1.jpg",
@@ -23,10 +23,13 @@ let cacheUrls = [
 ];
 
 self.addEventListener('install', function(event) {
+  // Perform install
   event.waitUntil(
-    caches.open(staticCacheName).then(function(cache) {
-      return cache.addAll(cacheUrls)
-    });
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
+        return cache.addAll(cacheUrls);
+      })
   );
 });
 
@@ -34,8 +37,7 @@ self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       Promise.all(cacheNames.filter(function(cacheName) {
-        return cache.startsWith('mws-') &&
-          cacheName != staticCacheName;
+        return cache.startsWith('mws-') && cacheName != staticCacheName;
       }).map(function(cacheName) {
         console.log("ServiceWorker removing cached files from " + cacheName)
         return caches.delete(cacheName);

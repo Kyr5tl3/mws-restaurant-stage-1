@@ -1,16 +1,11 @@
-document.addEventListener("DOMContentLoaded", event => {
-
-      if (!('serviceWorker' in navigator)) {
-        console.log('Service Worker not supported');
-        return;
-      }
-
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-            console.log('SW registered! Scope is:', registration.scope);
-          )
-          .catch(error => {
-            console.log("Registration failed : " + error)
-          })
-
-        });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
